@@ -27,11 +27,10 @@ export default function Profile() {
                 firstName: session.user.name || '',
                 address: session.user.address || '',
                 phoneNumber: session.user.phoneNumber?.replace("+33", "") || '',
-                dateOfBirth: session.user.dateOfBirth || undefined,
+                dateOfBirth: session.user.dateOfBirth ? new Date(String(session.user.dateOfBirth)).toISOString().split('T')[0] : undefined
             })
         }
     }, [status, session, router, reset])
-
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         setLoading(true)
         try {
@@ -107,7 +106,8 @@ export default function Profile() {
                             {...register("dateOfBirth", {
                                 required: "Date of birth is required",
                                 validate: value => {
-                                    const date = new Date(value);
+                                    const dateString = String(value);
+                                    const date = new Date(dateString);
                                     const now = new Date();
                                     return date < now || "Date of birth cannot be in the future";
                                 }
