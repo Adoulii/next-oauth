@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { firstName, lastName, dateOfBirth, address, phoneNumber } = body;
+    const { firstName,  dateOfBirth, address, phoneNumber } = body;
 
     if (!firstName || !dateOfBirth || !address || !phoneNumber) {
       return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     const updatedUser = await prisma.user.update({
       where: { email: session.user.email },
       data: { 
-        name: `${firstName} ${lastName}`,
+        name: `${firstName}`,
         dateOfBirth: parsedDate, 
         address, 
         phoneNumber 
