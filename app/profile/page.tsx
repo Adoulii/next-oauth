@@ -26,7 +26,7 @@ export default function Profile() {
             reset({
                 firstName: session.user.name || '',
                 address: session.user.address || '',
-                phoneNumber: session.user.phoneNumber || '',
+                phoneNumber: session.user.phoneNumber?.replace("+33", "") || '',
                 dateOfBirth: session.user.dateOfBirth || undefined,
             })
         }
@@ -157,16 +157,19 @@ export default function Profile() {
 
                     <div>
                         <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                        <input
-                            {...register("phoneNumber", {
-                                required: "Phone number is required",
-                                pattern: { value: /^\+?[1-9]\d{1,14}$/, message: "Invalid phone number format" }
-                            })}
-                            className={`block w-full px-4 py-3 border rounded-lg shadow-sm 
-                                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                                ${errors.phoneNumber ? 'border-red-300 text-red-700 placeholder-red-300' : 'border-gray-300 text-gray-900'} 
-                                hover:border-blue-500 focus:text-black transition duration-150 ease-in-out`}                            placeholder="Enter your phone number"
-                        />
+                        <div className="flex items-center">
+                            <span className="px-3 py-3 bg-gray-200 text-gray-600 rounded-l-lg">+33</span>
+                            <input
+                                {...register("phoneNumber", {
+                                    required: "Phone number is required",
+                                    pattern: { value: /^\d{9}$/, message: "Invalid phone number format (9 digits required after the country code)" }
+                                })}
+                                className={`block w-full px-4 py-3 border rounded-r-lg shadow-sm 
+                                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                                    ${errors.phoneNumber ? 'border-red-300 text-red-700 placeholder-red-300' : 'border-gray-300 text-gray-900'} 
+                                    hover:border-blue-500 focus:text-black transition duration-150 ease-in-out`} placeholder="Enter your phone number"
+                            />
+                        </div>
                         {errors.phoneNumber && typeof errors.phoneNumber.message === 'string' && <p className="mt-1 text-sm text-red-600">{errors.phoneNumber.message}</p>}
                     </div>
 
